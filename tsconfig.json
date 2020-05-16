@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "module": "CommonJS",
+        "moduleResolution": "Node",
+        "esModuleInterop": true,
+        "jsx": "react",
+        "jsxFactory": "createCommand",
+        "strict": true,
+        "target": "ES2017",
+        "declaration": true,
+        "outDir": "dist/"
+    },
+    "include": ["source/*.ts"]
+}

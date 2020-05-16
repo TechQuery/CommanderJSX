@@ -1,0 +1,53 @@
+{
+    "name": "commander-jsx",
+    "version": "0.4.0",
+    "license": "ISC",
+    "description": "",
+    "keywords": [],
+    "author": "shiy2008@gmail.com",
+    "homepage": "https://tech-query.me/CommanderJSX/",
+    "bugs": {
+        "url": "https://github.com/TechQuery/CommanderJSX/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/TechQuery/CommanderJSX.git"
+    },
+    "main": "dist/index.js",
+    "devDependencies": {
+        "@tech_query/node-toolkit": "^1.0.3",
+        "@types/jest": "^25.2.2",
+        "husky": "^4.2.5",
+        "jest": "^26.0.1",
+        "lint-staged": "^10.2.2",
+        "prettier": "^2.0.5",
+        "ts-jest": "^26.0.0",
+        "ts-node": "^8.10.1",
+        "typescript": "^3.9.2"
+    },
+    "prettier": {
+        "tabWidth": 4,
+        "trailingComma": "none",
+        "arrowParens": "avoid",
+        "singleQuote": true
+    },
+    "lint-staged": {
+        "*.{md,json,yml,ts,tsx}": [
+            "prettier --write"
+        ]
+    },
+    "jest": {
+        "preset": "ts-jest",
+        "testEnvironment": "node"
+    },
+    "scripts": {
+        "test": "lint-staged && jest",
+        "build": "rm -rf dist/  &&  tsc"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "npm test",
+            "pre-push": "npm run build"
+        }
+    }
+}
