@@ -1,9 +1,16 @@
 {
     "name": "commander-jsx",
     "version": "0.4.0",
-    "license": "ISC",
-    "description": "",
-    "keywords": [],
+    "license": "LGPL-3.0",
+    "description": "Command-line Arguments Parser with JSX support",
+    "keywords": [
+        "command-line",
+        "arguments",
+        "parameter",
+        "parser",
+        "jsx",
+        "typescript"
+    ],
     "author": "shiy2008@gmail.com",
     "homepage": "https://tech-query.me/CommanderJSX/",
     "bugs": {
@@ -14,15 +21,19 @@
         "url": "git+https://github.com/TechQuery/CommanderJSX.git"
     },
     "main": "dist/index.js",
+    "module": "source/index.ts",
+    "types": "dist/index.d.ts",
     "devDependencies": {
         "@tech_query/node-toolkit": "^1.0.3",
         "@types/jest": "^25.2.2",
         "husky": "^4.2.5",
         "jest": "^26.0.1",
         "lint-staged": "^10.2.2",
+        "open-cli": "^6.0.1",
         "prettier": "^2.0.5",
         "ts-jest": "^26.0.0",
         "ts-node": "^8.10.1",
+        "typedoc": "^0.17.6",
         "typescript": "^3.9.2"
     },
     "prettier": {
@@ -42,7 +53,9 @@
     },
     "scripts": {
         "test": "lint-staged && jest",
-        "build": "rm -rf dist/  &&  tsc"
+        "build": "rm -rf dist/ docs/  &&  tsc  &&  typedoc",
+        "start": "typedoc  &&  open-cli docs/index.html",
+        "prepublishOnly": "npm test  &&  npm run build"
     },
     "husky": {
         "hooks": {
