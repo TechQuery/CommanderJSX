@@ -3,16 +3,25 @@ import { createCommand, Command } from '../source';
 const log = (console.log = jest.fn());
 
 const command = (
-    <git version="2.10.0" description="Distributed Version Control system">
+    <git
+        version="2.10.0"
+        parameters="[command] [options]"
+        description="Distributed Version Control system"
+    >
         <remote
             description={`Manage the set of repositories ("remotes") whose branches you track`}
         >
             <add
                 description="Adds a remote named <name> for the repository at <url>"
                 options={{
-                    t: { parameters: '<branch>', description: 'Branch tree' }
+                    tree: {
+                        shortcut: 't',
+                        parameters: '<branch>',
+                        pattern: /^\w+$/,
+                        description: 'Branch tree'
+                    }
                 }}
-                executor={({ t }, name, url) => console.log(t, name, url)}
+                executor={({ tree }, name, url) => console.log(tree, name, url)}
             />
         </remote>
     </git>
@@ -28,43 +37,50 @@ describe('Command execution', () => {
     it('should show the Help text of root Command', () => {
         Command.execute(command, ['-h']);
 
-        expect(log).lastCalledWith(`git
+        expect(log).lastCalledWith(`git [command] [options]
+
 Distributed Version Control system
 
 Options:
-  -h           show Help information
-  --help       show Help information
-  -v           show Version number
-  --version    show Version number
+  -h, --help       show Help information
+  -v, --version    show Version number
+
 Commands:
-  help      show Help information
-  remote    Manage the set of repositories ("remotes") whose branches you track`);
+  help    [command]  show Help information
+  remote             Manage the set of repositories ("remotes") whose branches you track`);
     });
 
     it('should show the Help text of sub Command', () => {
         Command.execute(command, ['remote', 'help']);
 
         expect(log).lastCalledWith(`git remote
+
 Manage the set of repositories ("remotes") whose branches you track
 
 Options:
-  -h        show Help information
-  --help    show Help information
+  -h, --help    show Help information
+
 Commands:
-  add     Adds a remote named <name> for the repository at <url>
-  help    show Help information`);
+  add              Adds a remote named <name> for the repository at <url>
+  help  [command]  show Help information`);
     });
 
     it('should show the Help text of sub Command with Options', () => {
-        Command.execute(command, ['remote', 'add', '--help']);
+        const text = `git remote add
 
-        expect(log).lastCalledWith(`git remote add
 Adds a remote named <name> for the repository at <url>
 
 Options:
-  -h                show Help information
-  --help            show Help information
-  -t      <branch>  Branch tree`);
+  -h, --help            show Help information
+  -t, --tree  <branch>  Branch tree`;
+
+        Command.execute(command, ['remote', 'help', 'add']);
+
+        expect(log).lastCalledWith(text);
+
+        Command.execute(command, ['remote', 'add', '--help']);
+
+        expect(log).lastCalledWith(text);
     });
 
     it('should execute the Command with Options & Data', () => {
@@ -82,5 +98,17 @@ Options:
             'origin',
             'https://github.com/TechQuery/CommanderJSX.git'
         );
+    });
+
+    it('should handle the Error of Options & Commands', () => {
+        expect(() => Command.execute(command, ['test'])).toThrowError(
+            new ReferenceError('Unknown "test" command')
+        );
+        expect(() => Command.execute(command, ['--test'])).toThrowError(
+            new ReferenceError('Unknown "test" option')
+        );
+        expect(() =>
+            Command.execute(command, ['remote', 'add', '-t', 'a/1'])
+        ).toThrowError(new SyntaxError(`"tree=a/1" doesn't match /^\\w+$/`));
     });
 });

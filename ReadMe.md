@@ -9,6 +9,8 @@
 
 ## Example
 
+`index.tsx`
+
 ```JavaScript
 import { Command, createCommand } from 'commander-jsx';
 
@@ -44,6 +46,20 @@ Command.execute(
     }
 }
 ```
+
+Then, run `git help` in your terminal, it'll outputs:
+
+    git [command] [options]
+
+    Distributed Version Control system
+
+    Options:
+      -h, --help       show Help information
+      -v, --version    show Version number
+
+    Commands:
+      help    [command]  show Help information
+      remote             Manage the set of repositories ("remotes") whose branches you track
 
 [1]: https://facebook.github.io/jsx/
 [2]: https://david-dm.org/TechQuery/CommanderJSX
