@@ -1,0 +1,211 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>CommanderJSX</title>
+	<meta name="description" content="Documentation for CommanderJSX">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">CommanderJSX</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="globals.html">Globals</a>
+				</li>
+			</ul>
+			<h1>CommanderJSX</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<a href="#commanderjsx" id="commanderjsx" style="color: inherit; text-decoration: none;">
+					<h1>CommanderJSX</h1>
+				</a>
+				<p><strong>Command-line Arguments Parser</strong> with <a href="https://facebook.github.io/jsx/">JSX</a> support</p>
+				<p><a href="https://david-dm.org/TechQuery/CommanderJSX"><img src="https://david-dm.org/TechQuery/CommanderJSX.svg" alt="NPM Dependency"></a>
+				<a href="https://travis-ci.com/TechQuery/CommanderJSX"><img src="https://travis-ci.com/TechQuery/CommanderJSX.svg?branch=master" alt="Build Status"></a></p>
+				<p><a href="https://nodei.co/npm/commander-jsx/"><img src="https://nodei.co/npm/commander-jsx.png?downloads=true&downloadRank=true&stars=true" alt="NPM"></a></p>
+				<a href="#example" id="example" style="color: inherit; text-decoration: none;">
+					<h2>Example</h2>
+				</a>
+				<p><code>index.tsx</code></p>
+				<pre><code class="language-JavaScript"><span class="hljs-keyword">import</span> { Command, createCommand } <span class="hljs-keyword">from</span> <span class="hljs-string">'commander-jsx'</span>;
+
+Command.execute(
+    &lt;Command
+        name="git"
+        version="2.10.0"
+        parameters="[command] [options]"
+        description="Distributed Version Control system"
+    &gt;
+        &lt;Command
+            name="remote"
+            description='Manage the set of repositories ("remotes") whose branches you track'
+        &gt;
+            &lt;Command
+                name="add"
+                description="Adds a remote named &lt;name&gt; for the repository at &lt;url&gt;"
+                options={{
+                    tree: {
+                        shortcut: 't',
+                        parameters: '&lt;branch&gt;',
+                        pattern: /^\w+$/,
+                        description: 'Branch tree'
+                    }
+                }}
+                executor={({ tree }, name, url) =&gt; console.log(tree, name, url)}
+            /&gt;
+        &lt;/Command&gt;
+    &lt;/Command&gt;,
+    process.argv.slice(2)
+);</code></pre>
+				<p><code>tsconfig.json</code></p>
+				<pre><code class="language-JSON">{
+    <span class="hljs-attr">"compilerOptions"</span>: {
+        <span class="hljs-attr">"module"</span>: <span class="hljs-string">"CommonJS"</span>,
+        <span class="hljs-attr">"moduleResolution"</span>: <span class="hljs-string">"Node"</span>,
+        <span class="hljs-attr">"jsx"</span>: <span class="hljs-string">"react"</span>,
+        <span class="hljs-attr">"jsxFactory"</span>: <span class="hljs-string">"createCommand"</span>,
+        <span class="hljs-attr">"target"</span>: <span class="hljs-string">"ES2017"</span>,
+        <span class="hljs-attr">"outDir"</span>: <span class="hljs-string">"dist/"</span>
+    }
+}</code></pre>
+				<p>Then, run <code>git help</code> in your terminal, it&#39;ll outputs:</p>
+				<pre><code>git [command] [options]
+
+Distributed Version Control<span class="hljs-built_in"> system
+</span>
+Options:
+  -h, --help       show Help information
+  -v, --version    show Version number
+
+Commands:
+  help    [command]  show Help information
+  remote             Manage the <span class="hljs-builtin-name">set</span> of repositories (<span class="hljs-string">"remotes"</span>) whose branches you track</code></pre>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="globals.html"><em>Globals</em></a>
+					</li>
+					<li class=" tsd-kind-namespace">
+						<a href="modules/__global.html">__global</a>
+					</li>
+					<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+						<a href="modules/__global.jsx.html">__global.JSX</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/command.html" class="tsd-kind-icon">Command</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="interfaces/commandmeta.html" class="tsd-kind-icon">Command<wbr>Meta</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/option.html" class="tsd-kind-icon">Option</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#data" class="tsd-kind-icon">Data</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="globals.html#executor" class="tsd-kind-icon">Executor</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="globals.html#optiondata" class="tsd-kind-icon">Option<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="globals.html#options" class="tsd-kind-icon">Options</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#primitivedata" class="tsd-kind-icon">Primitive<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="globals.html#createcommand" class="tsd-kind-icon">create<wbr>Command</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#createtable" class="tsd-kind-icon">create<wbr>Table</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="globals.html#parsearguments" class="tsd-kind-icon">parse<wbr>Arguments</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#parsedata" class="tsd-kind-icon">parse<wbr>Data</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>
