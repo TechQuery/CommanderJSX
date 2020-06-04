@@ -1,6 +1,6 @@
 {
     "name": "commander-jsx",
-    "version": "0.5.0",
+    "version": "0.6.0",
     "license": "LGPL-3.0",
     "description": "Command-line Arguments Parser with JSX support",
     "keywords": [
@@ -28,11 +28,11 @@
         "@types/jest": "^25.2.3",
         "husky": "^4.2.5",
         "jest": "^26.0.1",
-        "lint-staged": "^10.2.4",
+        "lint-staged": "^10.2.8",
         "open-cli": "^6.0.1",
         "prettier": "^2.0.5",
-        "ts-jest": "^26.0.0",
-        "ts-node": "^8.10.1",
+        "ts-jest": "^26.1.0",
+        "ts-node": "^8.10.2",
         "typedoc": "^0.17.7",
         "typescript": "^3.9.3"
     },

@@ -3,15 +3,18 @@ import { createCommand, Command } from '../source';
 const log = (console.log = jest.fn());
 
 const command = (
-    <git
+    <Command
+        name="git"
         version="2.10.0"
         parameters="[command] [options]"
         description="Distributed Version Control system"
     >
-        <remote
-            description={`Manage the set of repositories ("remotes") whose branches you track`}
+        <Command
+            name="remote"
+            description='Manage the set of repositories ("remotes") whose branches you track'
         >
-            <add
+            <Command
+                name="add"
                 description="Adds a remote named <name> for the repository at <url>"
                 options={{
                     tree: {
@@ -23,8 +26,8 @@ const command = (
                 }}
                 executor={({ tree }, name, url) => console.log(tree, name, url)}
             />
-        </remote>
-    </git>
+        </Command>
+    </Command>
 );
 
 describe('Command execution', () => {

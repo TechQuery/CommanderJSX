@@ -15,19 +15,31 @@
 import { Command, createCommand } from 'commander-jsx';
 
 Command.execute(
-    <git version="2.10.0" description="Distributed Version Control system">
-        <remote
-            description={`Manage the set of repositories ("remotes") whose branches you track`}
+    <Command
+        name="git"
+        version="2.10.0"
+        parameters="[command] [options]"
+        description="Distributed Version Control system"
+    >
+        <Command
+            name="remote"
+            description='Manage the set of repositories ("remotes") whose branches you track'
         >
-            <add
+            <Command
+                name="add"
                 description="Adds a remote named <name> for the repository at <url>"
                 options={{
-                    t: { parameters: '<branch>', description: 'Branch tree' }
+                    tree: {
+                        shortcut: 't',
+                        parameters: '<branch>',
+                        pattern: /^\w+$/,
+                        description: 'Branch tree'
+                    }
                 }}
-                executor={({ t }, name, url) => console.log(t, name, url)}
+                executor={({ tree }, name, url) => console.log(tree, name, url)}
             />
-        </remote>
-    </git>,
+        </Command>
+    </Command>,
     process.argv.slice(2)
 );
 ```

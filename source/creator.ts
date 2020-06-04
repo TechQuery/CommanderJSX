@@ -1,24 +1,19 @@
-import { Options, Executor, Command } from './Command';
+import { Command, CommandMeta } from './Command';
 
-export interface Props<T> {
-    parameters?: string;
-    description?: string;
-    version?: string;
-    options?: Options<T>;
-    executor?: Executor<T>;
-    children?: Command<T>[];
+declare global {
+    namespace JSX {
+        interface IntrinsicElements<T> {
+            [key: string]: Command<T>;
+        }
+    }
 }
 
 export function createCommand<T>(
-    name: string,
-    props: Props<T>,
+    component: { new (meta: CommandMeta<T>): Command<T> },
+    props: CommandMeta<T>,
     ...children: Command<T>[]
 ) {
-    return new Command({
-        ...props,
-        name,
-        children
-    });
+    return new component({ ...props, children });
 }
 
 export function createTable(list: string[][]) {

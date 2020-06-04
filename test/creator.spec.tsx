@@ -1,11 +1,11 @@
-import { createCommand, createTable } from '../source';
+import { createCommand, Command, createTable } from '../source';
 
 describe('Creating utility', () => {
     it('should create a Command tree with JSX', () => {
         const command = (
-            <test description="test">
-                <example />
-            </test>
+            <Command name="test" description="test">
+                <Command name="example" />
+            </Command>
         );
         expect(command).toMatchObject({
             name: 'test',
