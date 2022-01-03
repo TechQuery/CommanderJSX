@@ -52,7 +52,7 @@
         "prepare": "husky install",
         "test": "lint-staged && jest",
         "build": "rm -rf dist/ docs/  &&  tsc  &&  typedoc source/",
-        "start": "typedoc  &&  open-cli docs/index.html",
+        "start": "typedoc source/  &&  open-cli docs/index.html",
         "prepublishOnly": "npm test  &&  npm run build"
     }
 }
