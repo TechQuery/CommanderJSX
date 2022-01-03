@@ -66,9 +66,9 @@ export class Command<T = any> {
 
     protected replaceShortcut(options: OptionData<T>) {
         const map: Record<string, keyof T> = Object.fromEntries(
-                Object.entries<Option>(
-                    this.options
-                ).map(([key, { shortcut }]) => [shortcut, key])
+                Object.entries<Option>(this.options).map(
+                    ([key, { shortcut }]) => [shortcut, key]
+                )
             ),
             data: OptionData<T> = {} as OptionData<T>;
 
@@ -94,7 +94,7 @@ export class Command<T = any> {
     }
 
     protected addPreset() {
-        const { name, options, children, executor } = this,
+        const { name, options, children } = this,
             version = { shortcut: 'v', description: 'show Version number' },
             help = { shortcut: 'h', description: 'show Help information' };
 

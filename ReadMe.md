@@ -3,7 +3,7 @@
 **Command-line Arguments Parser** with [JSX][1] support
 
 [![NPM Dependency](https://david-dm.org/TechQuery/CommanderJSX.svg)][2]
-[![Build Status](https://travis-ci.com/TechQuery/CommanderJSX.svg?branch=master)][3]
+[![CI & CD](https://github.com/TechQuery/CommanderJSX/workflows/CI%20&%20CD/badge.svg)][3]
 
 [![NPM](https://nodei.co/npm/commander-jsx.png?downloads=true&downloadRank=true&stars=true)][4]
 
@@ -75,5 +75,5 @@ Then, run `git help` in your terminal, it'll outputs:
 
 [1]: https://facebook.github.io/jsx/
 [2]: https://david-dm.org/TechQuery/CommanderJSX
-[3]: https://travis-ci.com/TechQuery/CommanderJSX
+[3]: https://github.com/TechQuery/CommanderJSX/actions
 [4]: https://nodei.co/npm/commander-jsx/
