@@ -61,7 +61,8 @@ Commands:
 Manage the set of repositories ("remotes") whose branches you track
 
 Options:
-  -h, --help    show Help information
+  -h, --help       show Help information
+  -v, --version    show Version number
 
 Commands:
   add              Adds a remote named <name> for the repository at <url>
@@ -74,8 +75,9 @@ Commands:
 Adds a remote named <name> for the repository at <url>
 
 Options:
-  -h, --help            show Help information
-  -t, --tree  <branch>  Branch tree`;
+  -h, --help               show Help information
+  -t, --tree     <branch>  Branch tree
+  -v, --version            show Version number`;
 
         Command.execute(command, ['remote', 'help', 'add']);
 

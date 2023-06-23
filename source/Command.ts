@@ -1,3 +1,5 @@
+import { packageOf } from '@tech_query/node-toolkit';
+
 import { OptionData, Data, parseArguments } from './parser';
 import { createTable } from './creator';
 
@@ -54,7 +56,7 @@ export class Command<T = any> {
         options = this.checkPattern(this.replaceShortcut(options));
 
         if ('version' in options) {
-            console.log(this.version);
+            this.showVersion();
         } else if ('help' in options) {
             this.showHelp();
         } else if (this.executor instanceof Function) {
@@ -98,11 +100,7 @@ export class Command<T = any> {
             version = { shortcut: 'v', description: 'show Version number' },
             help = { shortcut: 'h', description: 'show Help information' };
 
-        Object.assign(this.options, {
-            ...(this.version && { version }),
-            help,
-            ...options
-        });
+        Object.assign(this.options, { version, help, ...options });
 
         if (
             name !== 'help' &&
@@ -117,6 +115,13 @@ export class Command<T = any> {
                     executor: (_, command) => this.showHelp(command as string)
                 })
             );
+    }
+
+    showVersion() {
+        if (!this.version && !this.parent)
+            this.version = packageOf(process.argv[1]).meta.version;
+
+        if (this.version) console.log(this.version);
     }
 
     showHelp(command?: string) {
