@@ -1,8 +1,61 @@
+import { currentModulePath, packageOf } from '@tech_query/node-toolkit';
+
 import { createCommand, Command } from '../source';
 
-const log = (console.log = jest.fn());
+const log = (console.log = jest.fn()),
+    CMP = currentModulePath();
+const { meta } = packageOf(CMP);
 
-const command = (
+const simple_command = (
+    <Command>
+        <Command name="sub-command" />
+    </Command>
+);
+
+describe('Simple Command execution', () => {
+    jest.replaceProperty(process, 'argv', ['node', CMP]);
+
+    it('should find the Command Name in "package.json" for root Command', () => {
+        const name = Command.nameOf(
+            {
+                name: 'test',
+                bin: {
+                    a: './dist/a.js',
+                    b: 'dist/b.js'
+                }
+            },
+            '/home/test/.pnpm/global/5/node_modules/fs-match/dist/a.js'
+        );
+
+        expect(name).toBe('a');
+    });
+
+    it('should show the Version number of this package for root Command', () => {
+        Command.execute(simple_command, ['-v']);
+
+        expect(log).lastCalledWith(meta.version);
+    });
+
+    it('should show the Name & Description of this package for root Command', () => {
+        Command.execute(simple_command, ['-h']);
+
+        expect(log).lastCalledWith(
+            `${meta.name}
+
+${meta.description}
+
+Options:
+  -h, --help       show Help information
+  -v, --version    show Version number
+
+Commands:
+  help         [command]  show Help information
+  sub-command`
+        );
+    });
+});
+
+const git_command = (
     <Command
         name="git"
         version="2.10.0"
@@ -30,15 +83,15 @@ const command = (
     </Command>
 );
 
-describe('Command execution', () => {
-    it('should show the Version number of root Command', async () => {
-        Command.execute(command, ['-v']);
+describe('Complex Command execution', () => {
+    it('should show the Version number of root Command', () => {
+        Command.execute(git_command, ['-v']);
 
         expect(log).lastCalledWith('2.10.0');
     });
 
     it('should show the Help text of root Command', () => {
-        Command.execute(command, ['-h']);
+        Command.execute(git_command, ['-h']);
 
         expect(log).lastCalledWith(`git [command] [options]
 
@@ -54,15 +107,14 @@ Commands:
     });
 
     it('should show the Help text of sub Command', () => {
-        Command.execute(command, ['remote', 'help']);
+        Command.execute(git_command, ['remote', 'help']);
 
         expect(log).lastCalledWith(`git remote
 
 Manage the set of repositories ("remotes") whose branches you track
 
 Options:
-  -h, --help       show Help information
-  -v, --version    show Version number
+  -h, --help    show Help information
 
 Commands:
   add              Adds a remote named <name> for the repository at <url>
@@ -75,21 +127,20 @@ Commands:
 Adds a remote named <name> for the repository at <url>
 
 Options:
-  -h, --help               show Help information
-  -t, --tree     <branch>  Branch tree
-  -v, --version            show Version number`;
+  -h, --help            show Help information
+  -t, --tree  <branch>  Branch tree`;
 
-        Command.execute(command, ['remote', 'help', 'add']);
+        Command.execute(git_command, ['remote', 'help', 'add']);
 
         expect(log).lastCalledWith(text);
 
-        Command.execute(command, ['remote', 'add', '--help']);
+        Command.execute(git_command, ['remote', 'add', '--help']);
 
         expect(log).lastCalledWith(text);
     });
 
     it('should execute the Command with Options & Data', () => {
-        Command.execute(command, [
+        Command.execute(git_command, [
             'remote',
             'add',
             '-t',
@@ -106,14 +157,14 @@ Options:
     });
 
     it('should handle the Error of Options & Commands', () => {
-        expect(() => Command.execute(command, ['test'])).toThrowError(
+        expect(() => Command.execute(git_command, ['test'])).toThrowError(
             new ReferenceError('Unknown "test" command')
         );
-        expect(() => Command.execute(command, ['--test'])).toThrowError(
+        expect(() => Command.execute(git_command, ['--test'])).toThrowError(
             new ReferenceError('Unknown "test" option')
         );
         expect(() =>
-            Command.execute(command, ['remote', 'add', '-t', 'a/1'])
+            Command.execute(git_command, ['remote', 'add', '-t', 'a/1'])
         ).toThrowError(new SyntaxError(`"tree=a/1" doesn't match /^\\w+$/`));
     });
 });

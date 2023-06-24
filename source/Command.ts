@@ -15,15 +15,20 @@ export type Options<T> = Record<keyof T, Option>;
 export type Executor<T> = (options: OptionData<T>, ...data: Data[]) => any;
 
 export interface CommandMeta<T> extends Option {
-    name: string;
+    name?: string;
     version?: string;
     options?: Options<T>;
     children?: Command<T>[];
     executor?: Executor<T>;
 }
 
-export class Command<T = any> {
-    name: string;
+const PresetOption = {
+    version: { shortcut: 'v', description: 'show Version number' },
+    help: { shortcut: 'h', description: 'show Help information' }
+};
+
+export class Command<T = any> implements CommandMeta<T> {
+    name = '';
     parameters = '';
     description = '';
     version = '';
@@ -32,8 +37,7 @@ export class Command<T = any> {
     children: Command<T>[] = [];
     executor?: Executor<T>;
 
-    constructor({ name, ...meta }: CommandMeta<T>) {
-        this.name = name;
+    constructor(meta: CommandMeta<T>) {
         Object.assign(this, meta);
 
         for (const command of this.children) command.parent = this;
@@ -41,8 +45,34 @@ export class Command<T = any> {
         this.addPreset();
     }
 
+    static nameOf(meta: Record<string, any>, commandPath: string) {
+        if (typeof meta.bin != 'object') return meta.name as string;
+
+        commandPath = commandPath.replaceAll('\\', '/');
+
+        return Object.entries(meta.bin as Record<string, string>).find(
+            ([name, path]) => commandPath.endsWith(path.replace(/^\.\//, ''))
+        )?.[0];
+    }
+
     static execute<T>(command: Command<T>, args: string[]) {
         const { data, options } = parseArguments<T>(args);
+
+        if (
+            !command.parent &&
+            (!command.name || !command.version || !command.description)
+        ) {
+            const [_, commandPath] = process.argv;
+            const { meta } = packageOf(commandPath);
+
+            command.name ||= this.nameOf(meta, commandPath) || '';
+            command.description ||= meta.description || '';
+
+            if ((command.version ||= meta.version || ''))
+                (
+                    command.options as Record<keyof typeof PresetOption, any>
+                ).version = PresetOption.version;
+        }
 
         command.execute(options as OptionData<T>, ...data);
     }
@@ -56,7 +86,7 @@ export class Command<T = any> {
         options = this.checkPattern(this.replaceShortcut(options));
 
         if ('version' in options) {
-            this.showVersion();
+            console.log(this.version);
         } else if ('help' in options) {
             this.showHelp();
         } else if (this.executor instanceof Function) {
@@ -97,10 +127,13 @@ export class Command<T = any> {
 
     protected addPreset() {
         const { name, options, children } = this,
-            version = { shortcut: 'v', description: 'show Version number' },
-            help = { shortcut: 'h', description: 'show Help information' };
+            { version, help } = PresetOption;
 
-        Object.assign(this.options, { version, help, ...options });
+        Object.assign(this.options, {
+            ...(this.version ? { version } : {}),
+            help,
+            ...options
+        });
 
         if (
             name !== 'help' &&
@@ -115,13 +148,6 @@ export class Command<T = any> {
                     executor: (_, command) => this.showHelp(command as string)
                 })
             );
-    }
-
-    showVersion() {
-        if (!this.version && !this.parent)
-            this.version = packageOf(process.argv[1]).meta.version;
-
-        if (this.version) console.log(this.version);
     }
 
     showHelp(command?: string) {

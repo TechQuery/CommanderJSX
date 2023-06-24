@@ -1,6 +1,6 @@
 {
     "name": "commander-jsx",
-    "version": "0.6.5",
+    "version": "0.6.8",
     "license": "LGPL-3.0",
     "description": "Command-line Arguments Parser with JSX support",
     "keywords": [
