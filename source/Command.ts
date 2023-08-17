@@ -135,11 +135,7 @@ export class Command<T = any> implements CommandMeta<T> {
             ...options
         });
 
-        if (
-            name !== 'help' &&
-            children[0] &&
-            !children.find(({ name }) => name === 'help')
-        )
+        if (name !== 'help' && !children.find(({ name }) => name === 'help'))
             children.push(
                 new Command({
                     name: 'help',

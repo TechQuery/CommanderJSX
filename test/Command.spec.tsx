@@ -128,7 +128,10 @@ Adds a remote named <name> for the repository at <url>
 
 Options:
   -h, --help            show Help information
-  -t, --tree  <branch>  Branch tree`;
+  -t, --tree  <branch>  Branch tree
+
+Commands:
+  help  [command]  show Help information`;
 
         Command.execute(git_command, ['remote', 'help', 'add']);
 

@@ -2,7 +2,7 @@
 
 **Command-line Arguments Parser** with [JSX][1] support
 
-[![NPM Dependency](https://david-dm.org/TechQuery/CommanderJSX.svg)][2]
+[![NPM Dependency](https://img.shields.io/librariesio/github/TechQuery/CommanderJSX.svg)][2]
 [![CI & CD](https://github.com/TechQuery/CommanderJSX/actions/workflows/main.yml/badge.svg)][3]
 
 [![NPM](https://nodei.co/npm/commander-jsx.png?downloads=true&downloadRank=true&stars=true)][4]
@@ -76,6 +76,6 @@ Commands:
 ```
 
 [1]: https://facebook.github.io/jsx/
-[2]: https://david-dm.org/TechQuery/CommanderJSX
+[2]: https://libraries.io/npm/commander-jsx
 [3]: https://github.com/TechQuery/CommanderJSX/actions/workflows/main.yml
 [4]: https://nodei.co/npm/commander-jsx/
