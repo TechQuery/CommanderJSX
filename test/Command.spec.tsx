@@ -1,6 +1,6 @@
 import { currentModulePath, packageOf } from '@tech_query/node-toolkit';
 
-import { Command } from '../source';
+import { Command } from '../source/dist';
 
 const log = (console.log = jest.fn()),
     CMP = currentModulePath();
@@ -166,8 +166,8 @@ Commands:
         expect(() => Command.execute(git_command, ['--test'])).toThrowError(
             new ReferenceError('Unknown "test" option')
         );
-        expect(() =>
-            Command.execute(git_command, ['remote', 'add', '-t', 'a/1'])
-        ).toThrowError(new SyntaxError(`"tree=a/1" doesn't match /^\\w+$/`));
+        expect(() => Command.execute(git_command, ['remote', 'add', '-t', 'a/1'])).toThrowError(
+            new SyntaxError(`"tree=a/1" doesn't match /^\\w+$/`)
+        );
     });
 });

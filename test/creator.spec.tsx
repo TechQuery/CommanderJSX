@@ -1,4 +1,4 @@
-import { Command, createTable } from '../source';
+import { Command, createTable } from '../source/dist';
 
 describe('Creating utility', () => {
     it('should create a Command tree with JSX', () => {

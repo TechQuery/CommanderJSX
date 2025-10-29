@@ -21,7 +21,7 @@
         "url": "git+https://github.com/TechQuery/CommanderJSX.git"
     },
     "main": "dist/index.js",
-    "module": "source/index.ts",
+    "source": "source/dist/index.ts",
     "types": "dist/index.d.ts",
     "dependencies": {
         "@tech_query/node-toolkit": "2.0.0-alpha.0",
@@ -58,8 +58,8 @@
     "scripts": {
         "prepare": "husky",
         "test": "lint-staged && jest",
-        "parcel": "tsc  &&  cp dist/jsx-runtime.* .  &&  cp jsx-runtime.js jsx-dev-runtime.js  &&  cp jsx-runtime.d.ts jsx-dev-runtime.d.ts",
-        "build": "rm -rf dist/ docs/  &&  npm run parcel  &&  typedoc source/",
+        "parcel": "tsc  &&  mv dist/jsx-runtime.* .  &&  cp jsx-runtime.js jsx-dev-runtime.js  &&  mv dist/dist/* dist/  &&  rm -rf dist/dist",
+        "build": "rm -rf dist/ docs/  &&  npm run parcel  &&  typedoc",
         "start": "typedoc source/  &&  open-cli docs/index.html",
         "prepublishOnly": "npm test  &&  npm run build"
     }

@@ -1,6 +1,6 @@
 import { makeArray } from 'web-utility';
 
-import { Command, CommandChildren, CommandMeta } from './Command';
+import { Command, CommandChildren, CommandMeta } from './dist/Command';
 
 declare global {
     namespace JSX {
@@ -34,4 +34,4 @@ export const jsxDEV = jsx;
 /**
  * Fragment support (not typically used in CommanderJSX, but required by JSX runtime)
  */
-export const Fragment = ({ children }: { children?: CommandChildren }) => makeArray(children);
+export const Fragment = ({ children }: JSX.IntrinsicAttributes) => makeArray(children);
