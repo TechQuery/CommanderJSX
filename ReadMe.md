@@ -84,6 +84,13 @@ Commands:
   remote             Manage the set of repositories ("remotes") whose branches you track
 ```
 
+## Typical cases
+
+1. https://github.com/idea2app/Git-utility
+2. https://github.com/TechQuery/Web-fetch
+3. https://github.com/TechQuery/KoApache
+4. https://github.com/TechQuery/fs-match
+
 [1]: https://facebook.github.io/jsx/
 [2]: https://libraries.io/npm/commander-jsx
 [3]: https://github.com/TechQuery/CommanderJSX/actions/workflows/main.yml
