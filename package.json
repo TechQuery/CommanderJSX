@@ -24,25 +24,27 @@
     "module": "source/index.ts",
     "types": "dist/index.d.ts",
     "dependencies": {
-        "@tech_query/node-toolkit": "^1.2.1",
-        "tslib": "^2.7.0"
+        "@tech_query/node-toolkit": "2.0.0-alpha.0",
+        "tslib": "^2.8.1",
+        "web-utility": "^4.6.3"
     },
     "devDependencies": {
-        "@types/jest": "^29.5.13",
-        "@types/node": "^20.16.11",
-        "husky": "^9.1.6",
+        "@types/jest": "^29.5.14",
+        "@types/node": "^22.18.13",
+        "husky": "^9.1.7",
         "jest": "^29.7.0",
-        "lint-staged": "^15.2.10",
+        "lint-staged": "^16.2.6",
         "open-cli": "^8.0.0",
-        "prettier": "^3.3.3",
-        "ts-jest": "^29.2.5",
+        "prettier": "^3.6.2",
+        "ts-jest": "^29.4.5",
         "ts-node": "^10.9.2",
-        "typedoc": "^0.26.8",
-        "typedoc-plugin-mdn-links": "^3.3.2",
-        "typescript": "~5.6.3"
+        "typedoc": "^0.28.14",
+        "typedoc-plugin-mdn-links": "^5.0.10",
+        "typescript": "~5.9.3"
     },
     "prettier": {
         "tabWidth": 4,
+        "printWidth": 100,
         "trailingComma": "none",
         "arrowParens": "avoid",
         "singleQuote": true
@@ -54,7 +56,7 @@
         "preset": "ts-jest"
     },
     "scripts": {
-        "prepare": "husky install",
+        "prepare": "husky",
         "test": "lint-staged && jest",
         "parcel": "tsc  &&  cp dist/jsx-runtime.* .  &&  cp jsx-runtime.js jsx-dev-runtime.js  &&  cp jsx-runtime.d.ts jsx-dev-runtime.d.ts",
         "build": "rm -rf dist/ docs/  &&  npm run parcel  &&  typedoc source/",

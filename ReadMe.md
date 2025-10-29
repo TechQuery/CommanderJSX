@@ -7,9 +7,16 @@
 
 [![NPM](https://nodei.co/npm/commander-jsx.png?downloads=true&downloadRank=true&stars=true)][4]
 
+## Versions
+
+| SemVer  |    status    |       JSX        |
+| :-----: | :----------: | :--------------: |
+| `>=0.7` | ✅developing |  import source   |
+| `<0.7`  | ❌deprecated | factory function |
+
 ## Example
 
-`index.tsx`
+### `index.tsx`
 
 ```JavaScript
 import { Command } from 'commander-jsx';
@@ -44,7 +51,7 @@ Command.execute(
 );
 ```
 
-`tsconfig.json`
+### `tsconfig.json`
 
 ```JSON
 {
@@ -59,7 +66,9 @@ Command.execute(
 }
 ```
 
-Then, run `git help` in your terminal, it'll outputs:
+## Usage
+
+Run `git help` in your terminal, it'll outputs:
 
 ```text
 git [command] [options]
