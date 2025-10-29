@@ -7,12 +7,19 @@
 
 [![NPM](https://nodei.co/npm/commander-jsx.png?downloads=true&downloadRank=true&stars=true)][4]
 
+## Versions
+
+| SemVer  |    status    |       JSX        |
+| :-----: | :----------: | :--------------: |
+| `>=0.7` | ✅developing |  import source   |
+| `<0.7`  | ❌deprecated | factory function |
+
 ## Example
 
-`index.tsx`
+### `index.tsx`
 
 ```JavaScript
-import { Command, createCommand } from 'commander-jsx';
+import { Command } from 'commander-jsx';
 
 Command.execute(
     <Command
@@ -44,22 +51,24 @@ Command.execute(
 );
 ```
 
-`tsconfig.json`
+### `tsconfig.json`
 
 ```JSON
 {
     "compilerOptions": {
         "module": "CommonJS",
         "moduleResolution": "Node",
-        "jsx": "react",
-        "jsxFactory": "createCommand",
+        "jsx": "react-jsx",
+        "jsxImportSource": "commander-jsx",
         "target": "ES2017",
         "outDir": "dist/"
     }
 }
 ```
 
-Then, run `git help` in your terminal, it'll outputs:
+## Usage
+
+Run `git help` in your terminal, it'll outputs:
 
 ```text
 git [command] [options]
@@ -74,6 +83,13 @@ Commands:
   help    [command]  show Help information
   remote             Manage the set of repositories ("remotes") whose branches you track
 ```
+
+## Typical cases
+
+1. https://github.com/idea2app/Git-utility
+2. https://github.com/TechQuery/Web-fetch
+3. https://github.com/TechQuery/KoApache
+4. https://github.com/TechQuery/fs-match
 
 [1]: https://facebook.github.io/jsx/
 [2]: https://libraries.io/npm/commander-jsx

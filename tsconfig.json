@@ -3,21 +3,26 @@
         "module": "CommonJS",
         "moduleResolution": "Node",
         "esModuleInterop": true,
-        "jsx": "react",
-        "jsxFactory": "createCommand",
+        "jsx": "react-jsx",
+        "jsxImportSource": "commander-jsx",
         "strict": true,
         "target": "ES2017",
         "lib": ["ES2022", "DOM"],
         "declaration": true,
         "importHelpers": true,
-        "outDir": "dist/"
+        "outDir": "dist/",
+        "paths": {
+            "commander-jsx/jsx-runtime": ["./source/jsx-runtime"],
+            "commander-jsx/jsx-dev-runtime": ["./source/jsx-runtime"]
+        }
     },
-    "include": ["source/*.ts"],
+    "include": ["source/**/*.ts"],
     "typedocOptions": {
         "name": "CommanderJSX",
         "excludeExternals": true,
         "excludePrivate": true,
         "readme": "./ReadMe.md",
+        "entryPoints": ["source/dist/index.ts", "source/jsx-runtime.ts"],
         "plugin": ["typedoc-plugin-mdn-links"]
     }
 }

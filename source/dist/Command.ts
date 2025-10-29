@@ -14,11 +14,13 @@ export type Options<T> = Record<keyof T, Option>;
 
 export type Executor<T> = (options: OptionData<T>, ...data: Data[]) => any;
 
+export type CommandChildren<T = any> = Command<T> | Array<CommandChildren<T>>;
+
 export interface CommandMeta<T> extends Option {
     name?: string;
     version?: string;
     options?: Options<T>;
-    children?: Command<T>[];
+    children?: CommandChildren<T>;
     executor?: Executor<T>;
 }
 
@@ -50,18 +52,15 @@ export class Command<T = any> implements CommandMeta<T> {
 
         commandPath = commandPath.replaceAll('\\', '/');
 
-        return Object.entries(meta.bin as Record<string, string>).find(
-            ([name, path]) => commandPath.endsWith(path.replace(/^\.\//, ''))
+        return Object.entries(meta.bin as Record<string, string>).find(([name, path]) =>
+            commandPath.endsWith(path.replace(/^\.\//, ''))
         )?.[0];
     }
 
     static execute<T>(command: Command<T>, args: string[]) {
         const { data, options } = parseArguments<T>(args);
 
-        if (
-            !command.parent &&
-            (!command.name || !command.version || !command.description)
-        ) {
+        if (!command.parent && (!command.name || !command.version || !command.description)) {
             const [_, commandPath] = process.argv;
             const { meta } = packageOf(commandPath);
 
@@ -69,9 +68,8 @@ export class Command<T = any> implements CommandMeta<T> {
             command.description ||= meta.description || '';
 
             if ((command.version ||= meta.version || ''))
-                (
-                    command.options as Record<keyof typeof PresetOption, any>
-                ).version = PresetOption.version;
+                (command.options as Record<keyof typeof PresetOption, any>).version =
+                    PresetOption.version;
         }
 
         command.execute(options as OptionData<T>, ...data);
@@ -80,8 +78,7 @@ export class Command<T = any> implements CommandMeta<T> {
     execute(options: OptionData<T>, ...data: Data[]): void {
         const command = this.children.find(({ name }) => name === data[0]);
 
-        if (command instanceof Command)
-            return command.execute(options, ...data.slice(1));
+        if (command instanceof Command) return command.execute(options, ...data.slice(1));
 
         options = this.checkPattern(this.replaceShortcut(options));
 
@@ -98,9 +95,7 @@ export class Command<T = any> implements CommandMeta<T> {
 
     protected replaceShortcut(options: OptionData<T>) {
         const map: Record<string, keyof T> = Object.fromEntries(
-                Object.entries<Option>(this.options).map(
-                    ([key, { shortcut }]) => [shortcut, key]
-                )
+                Object.entries<Option>(this.options).map(([key, { shortcut }]) => [shortcut, key])
             ),
             data: OptionData<T> = {} as OptionData<T>;
 
@@ -118,9 +113,7 @@ export class Command<T = any> implements CommandMeta<T> {
             if (!option) throw ReferenceError(`Unknown "${key}" option`);
 
             if (option.pattern?.test(options[key] + '') === false)
-                throw SyntaxError(
-                    `"${key}=${options[key]}" doesn't match ${option.pattern}`
-                );
+                throw SyntaxError(`"${key}=${options[key]}" doesn't match ${option.pattern}`);
         }
         return options;
     }
@@ -162,16 +155,12 @@ export class Command<T = any> implements CommandMeta<T> {
 
     toString() {
         const result = [
-            [this.parameters, this.name, ...this.getParentNames()]
-                .reverse()
-                .join(' ')
-                .trim(),
+            [this.parameters, this.name, ...this.getParentNames()].reverse().join(' ').trim(),
             this.description,
             'Options:\n' + this.toOptionString()
         ];
 
-        if (this.children[0])
-            result.push('Commands:\n' + this.toChildrenString());
+        if (this.children[0]) result.push('Commands:\n' + this.toChildrenString());
 
         return result.join('\n\n');
     }
@@ -180,19 +169,12 @@ export class Command<T = any> implements CommandMeta<T> {
         return createTable(
             Object.entries<Option>(this.options as Options<T>)
                 .sort(([A], [B]) => A.localeCompare(B))
-                .map(
-                    ([
-                        name,
-                        { shortcut, parameters = '', description = '' }
-                    ]) => [
-                        '',
-                        `${shortcut ? `-${shortcut}, ` : ''}${
-                            name[1] ? '-' : ''
-                        }-${name}`,
-                        parameters,
-                        description
-                    ]
-                )
+                .map(([name, { shortcut, parameters = '', description = '' }]) => [
+                    '',
+                    `${shortcut ? `-${shortcut}, ` : ''}${name[1] ? '-' : ''}-${name}`,
+                    parameters,
+                    description
+                ])
         );
     }
 

@@ -1,4 +1,4 @@
-import { parseData, parseArguments } from '../source/parser';
+import { parseData, parseArguments } from '../source/dist/parser';
 
 describe('Data parser', () => {
     it('should parse String to Data', () => {
@@ -9,16 +9,7 @@ describe('Data parser', () => {
 
     it('should parse Command-line arguments to an Object', () => {
         expect(
-            parseArguments([
-                '-a',
-                '-b',
-                '0',
-                '-cd',
-                '--test',
-                '--example',
-                '0,1',
-                'sample'
-            ])
+            parseArguments(['-a', '-b', '0', '-cd', '--test', '--example', '0,1', 'sample'])
         ).toMatchObject({
             options: {
                 a: true,

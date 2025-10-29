@@ -1,17 +1,12 @@
 export type PrimitiveData = string | number | boolean | null;
 
-export type Data =
-    | PrimitiveData
-    | Record<string, PrimitiveData>
-    | PrimitiveData[];
+export type Data = PrimitiveData | Record<string, PrimitiveData> | PrimitiveData[];
 
 export function parseData(raw: string): Data {
     try {
         return JSON.parse((raw = raw.trim()));
     } catch {
-        return raw.includes(',')
-            ? (raw.split(',').map(parseData) as PrimitiveData[])
-            : raw;
+        return raw.includes(',') ? (raw.split(',').map(parseData) as PrimitiveData[]) : raw;
     }
 }
 
@@ -27,8 +22,7 @@ export function parseArguments<T>(list: string[]) {
             lastKey = item.slice(2);
             options[lastKey as keyof T] = true;
         } else if (item.startsWith('-')) {
-            if (item[2])
-                for (const k of item.slice(1)) options[k as keyof T] = true;
+            if (item[2]) for (const k of item.slice(1)) options[k as keyof T] = true;
             else {
                 lastKey = item[1];
                 options[lastKey as keyof T] = true;
