@@ -1,6 +1,6 @@
 import { currentModulePath, packageOf } from '@tech_query/node-toolkit';
 
-import { createCommand, Command } from '../source';
+import { Command } from '../source';
 
 const log = (console.log = jest.fn()),
     CMP = currentModulePath();

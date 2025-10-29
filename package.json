@@ -56,7 +56,8 @@
     "scripts": {
         "prepare": "husky install",
         "test": "lint-staged && jest",
-        "build": "rm -rf dist/ docs/  &&  tsc  &&  typedoc source/",
+        "parcel": "tsc  &&  cp dist/jsx-runtime.* .  &&  cp jsx-runtime.js jsx-dev-runtime.js  &&  cp jsx-runtime.d.ts jsx-dev-runtime.d.ts",
+        "build": "rm -rf dist/ docs/  &&  npm run parcel  &&  typedoc source/",
         "start": "typedoc source/  &&  open-cli docs/index.html",
         "prepublishOnly": "npm test  &&  npm run build"
     }
