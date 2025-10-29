@@ -12,7 +12,7 @@
 `index.tsx`
 
 ```JavaScript
-import { Command, createCommand } from 'commander-jsx';
+import { Command } from 'commander-jsx';
 
 Command.execute(
     <Command
@@ -51,8 +51,8 @@ Command.execute(
     "compilerOptions": {
         "module": "CommonJS",
         "moduleResolution": "Node",
-        "jsx": "react",
-        "jsxFactory": "createCommand",
+        "jsx": "react-jsx",
+        "jsxImportSource": "commander-jsx",
         "target": "ES2017",
         "outDir": "dist/"
     }
