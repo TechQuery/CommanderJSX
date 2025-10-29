@@ -33,13 +33,13 @@ describe('Simple Command execution', () => {
     it('should show the Version number of this package for root Command', () => {
         Command.execute(simple_command, ['-v']);
 
-        expect(log).lastCalledWith(meta.version);
+        expect(log).toHaveBeenLastCalledWith(meta.version);
     });
 
     it('should show the Name & Description of this package for root Command', () => {
         Command.execute(simple_command, ['-h']);
 
-        expect(log).lastCalledWith(
+        expect(log).toHaveBeenLastCalledWith(
             `${meta.name}
 
 ${meta.description}
@@ -87,13 +87,13 @@ describe('Complex Command execution', () => {
     it('should show the Version number of root Command', () => {
         Command.execute(git_command, ['-v']);
 
-        expect(log).lastCalledWith('2.10.0');
+        expect(log).toHaveBeenLastCalledWith('2.10.0');
     });
 
     it('should show the Help text of root Command', () => {
         Command.execute(git_command, ['-h']);
 
-        expect(log).lastCalledWith(`git [command] [options]
+        expect(log).toHaveBeenLastCalledWith(`git [command] [options]
 
 Distributed Version Control system
 
@@ -109,7 +109,7 @@ Commands:
     it('should show the Help text of sub Command', () => {
         Command.execute(git_command, ['remote', 'help']);
 
-        expect(log).lastCalledWith(`git remote
+        expect(log).toHaveBeenLastCalledWith(`git remote
 
 Manage the set of repositories ("remotes") whose branches you track
 
@@ -135,11 +135,11 @@ Commands:
 
         Command.execute(git_command, ['remote', 'help', 'add']);
 
-        expect(log).lastCalledWith(text);
+        expect(log).toHaveBeenLastCalledWith(text);
 
         Command.execute(git_command, ['remote', 'add', '--help']);
 
-        expect(log).lastCalledWith(text);
+        expect(log).toHaveBeenLastCalledWith(text);
     });
 
     it('should execute the Command with Options & Data', () => {
@@ -152,7 +152,7 @@ Commands:
             'https://github.com/TechQuery/CommanderJSX.git'
         ]);
 
-        expect(log).lastCalledWith(
+        expect(log).toHaveBeenLastCalledWith(
             'master',
             'origin',
             'https://github.com/TechQuery/CommanderJSX.git'
@@ -160,13 +160,13 @@ Commands:
     });
 
     it('should handle the Error of Options & Commands', () => {
-        expect(() => Command.execute(git_command, ['test'])).toThrowError(
+        expect(() => Command.execute(git_command, ['test'])).toThrow(
             new ReferenceError('Unknown "test" command')
         );
-        expect(() => Command.execute(git_command, ['--test'])).toThrowError(
+        expect(() => Command.execute(git_command, ['--test'])).toThrow(
             new ReferenceError('Unknown "test" option')
         );
-        expect(() => Command.execute(git_command, ['remote', 'add', '-t', 'a/1'])).toThrowError(
+        expect(() => Command.execute(git_command, ['remote', 'add', '-t', 'a/1'])).toThrow(
             new SyntaxError(`"tree=a/1" doesn't match /^\\w+$/`)
         );
     });

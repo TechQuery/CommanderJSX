@@ -4,17 +4,13 @@
         "moduleResolution": "Node",
         "esModuleInterop": true,
         "jsx": "react-jsx",
-        "jsxImportSource": "commander-jsx",
+        "jsxImportSource": "../source",
         "strict": true,
         "target": "ES2017",
         "lib": ["ES2022", "DOM"],
         "declaration": true,
         "importHelpers": true,
-        "outDir": "dist/",
-        "paths": {
-            "commander-jsx/jsx-runtime": ["./source/jsx-runtime"],
-            "commander-jsx/jsx-dev-runtime": ["./source/jsx-runtime"]
-        }
+        "outDir": "dist/"
     },
     "include": ["source/**/*.ts"],
     "typedocOptions": {
