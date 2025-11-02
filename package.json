@@ -1,6 +1,6 @@
 {
     "name": "commander-jsx",
-    "version": "0.7.1",
+    "version": "0.7.2",
     "license": "LGPL-3.0",
     "description": "Command-line Arguments Parser with JSX support",
     "keywords": [
@@ -24,9 +24,9 @@
     "source": "source/dist/index.ts",
     "types": "dist/index.d.ts",
     "dependencies": {
-        "@tech_query/node-toolkit": "2.0.0-beta.0",
+        "@tech_query/node-toolkit": "^2.0.0-beta.2",
         "tslib": "^2.8.1",
-        "web-utility": "^4.6.3"
+        "web-utility": "^4.6.4"
     },
     "devDependencies": {
         "@types/jest": "^29.5.14",
