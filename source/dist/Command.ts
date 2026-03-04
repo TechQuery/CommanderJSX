@@ -12,16 +12,16 @@ export interface Option {
 
 export type Options<T> = Record<keyof T, Option>;
 
-export type Executor<T> = (options: OptionData<T>, ...data: Data[]) => any;
+export type Executor<I, O = any> = (options: OptionData<I>, ...data: Data[]) => O;
 
-export type CommandChildren<T = any> = Command<T> | Array<CommandChildren<T>>;
+export type CommandChildren<I = any, O = any> = Command<I, O> | Array<CommandChildren<I, O>>;
 
-export interface CommandMeta<T> extends Option {
+export interface CommandMeta<I, O = any> extends Option {
     name?: string;
     version?: string;
-    options?: Options<T>;
-    children?: CommandChildren<T>;
-    executor?: Executor<T>;
+    options?: Options<I>;
+    children?: CommandChildren<I>;
+    executor?: Executor<I, O>;
 }
 
 const PresetOption = {
@@ -29,17 +29,17 @@ const PresetOption = {
     help: { shortcut: 'h', description: 'show Help information' }
 };
 
-export class Command<T = any> implements CommandMeta<T> {
+export class Command<I = any, O = any> implements CommandMeta<I, O> {
     name = '';
     parameters = '';
     description = '';
     version = '';
-    options: Options<T> = {} as Options<T>;
-    parent?: Command<T>;
-    children: Command<T>[] = [];
-    executor?: Executor<T>;
+    options: Options<I> = {} as Options<I>;
+    parent?: Command;
+    children: Command[] = [];
+    executor?: Executor<I, O>;
 
-    constructor(meta: CommandMeta<T>) {
+    constructor(meta: CommandMeta<I, O>) {
         Object.assign(this, meta);
 
         for (const command of this.children) command.parent = this;
@@ -57,8 +57,8 @@ export class Command<T = any> implements CommandMeta<T> {
         )?.[0];
     }
 
-    static execute<T>(command: Command<T>, args: string[]) {
-        const { data, options } = parseArguments<T>(args);
+    static async execute<I, O>(command: Command<I, O>, args: string[]) {
+        const { data, options } = parseArguments<I>(args);
 
         if (!command.parent && (!command.name || !command.version || !command.description)) {
             const [_, commandPath] = process.argv;
@@ -71,11 +71,10 @@ export class Command<T = any> implements CommandMeta<T> {
                 (command.options as Record<keyof typeof PresetOption, any>).version =
                     PresetOption.version;
         }
-
-        command.execute(options as OptionData<T>, ...data);
+        return command.execute(options as OptionData<I>, ...data);
     }
 
-    execute(options: OptionData<T>, ...data: Data[]): void {
+    execute(options: OptionData<I>, ...data: Data[]): O | void {
         const command = this.children.find(({ name }) => name === data[0]);
 
         if (command instanceof Command) return command.execute(options, ...data.slice(1));
@@ -87,17 +86,17 @@ export class Command<T = any> implements CommandMeta<T> {
         } else if ('help' in options) {
             this.showHelp();
         } else if (this.executor instanceof Function) {
-            this.executor(options, ...data);
+            return this.executor(options, ...data);
         } else {
             throw ReferenceError(`Unknown "${data[0]}" command`);
         }
     }
 
-    protected replaceShortcut(options: OptionData<T>) {
-        const map: Record<string, keyof T> = Object.fromEntries(
+    protected replaceShortcut(options: OptionData<I>) {
+        const map: Record<string, keyof I> = Object.fromEntries(
                 Object.entries<Option>(this.options).map(([key, { shortcut }]) => [shortcut, key])
             ),
-            data: OptionData<T> = {} as OptionData<T>;
+            data: OptionData<I> = {} as OptionData<I>;
 
         for (const key in options)
             if (key in map) data[map[key]] = options[key];
@@ -106,7 +105,7 @@ export class Command<T = any> implements CommandMeta<T> {
         return data;
     }
 
-    protected checkPattern(options: OptionData<T>) {
+    protected checkPattern(options: OptionData<I>) {
         for (const key in options) {
             const option = this.options[key];
 
@@ -140,11 +139,11 @@ export class Command<T = any> implements CommandMeta<T> {
     }
 
     showHelp(command?: string) {
-        if (!command) return console.log(this + '');
+        const that = command ? this.children.find(({ name }) => name === command) : this;
 
-        const that = this.children.find(({ name }) => name === command);
+        if (!that) throw new ReferenceError(`Unknown "${command}" command`);
 
-        if (that) console.log(that + '');
+        console.log(that + '');
     }
 
     *getParentNames() {
@@ -167,7 +166,7 @@ export class Command<T = any> implements CommandMeta<T> {
 
     toOptionString() {
         return createTable(
-            Object.entries<Option>(this.options as Options<T>)
+            Object.entries<Option>(this.options as Options<I>)
                 .sort(([A], [B]) => A.localeCompare(B))
                 .map(([name, { shortcut, parameters = '', description = '' }]) => [
                     '',

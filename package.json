@@ -1,6 +1,6 @@
 {
     "name": "commander-jsx",
-    "version": "0.7.2",
+    "version": "0.7.3",
     "license": "LGPL-3.0",
     "description": "Command-line Arguments Parser with JSX support",
     "keywords": [
@@ -24,22 +24,22 @@
     "source": "source/dist/index.ts",
     "types": "dist/index.d.ts",
     "dependencies": {
-        "@tech_query/node-toolkit": "^2.0.0-beta.2",
+        "@tech_query/node-toolkit": "^2.0.0-beta.3",
         "tslib": "^2.8.1",
         "web-utility": "^4.6.4"
     },
     "devDependencies": {
         "@types/jest": "^29.5.14",
-        "@types/node": "^22.18.13",
+        "@types/node": "^24.11.0",
         "husky": "^9.1.7",
         "jest": "^29.7.0",
-        "lint-staged": "^16.2.6",
+        "lint-staged": "^16.3.2",
         "open-cli": "^8.0.0",
-        "prettier": "^3.6.2",
-        "ts-jest": "^29.4.5",
+        "prettier": "^3.8.1",
+        "ts-jest": "^29.4.6",
         "ts-node": "^10.9.2",
-        "typedoc": "^0.28.14",
-        "typedoc-plugin-mdn-links": "^5.0.10",
+        "typedoc": "^0.28.17",
+        "typedoc-plugin-mdn-links": "^5.1.1",
         "typescript": "~5.9.3"
     },
     "prettier": {

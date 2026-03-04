@@ -30,14 +30,14 @@ describe('Simple Command execution', () => {
         expect(name).toBe('a');
     });
 
-    it('should show the Version number of this package for root Command', () => {
-        Command.execute(simple_command, ['-v']);
+    it('should show the Version number of this package for root Command', async () => {
+        await Command.execute(simple_command, ['-v']);
 
         expect(log).toHaveBeenLastCalledWith(meta.version);
     });
 
-    it('should show the Name & Description of this package for root Command', () => {
-        Command.execute(simple_command, ['-h']);
+    it('should show the Name & Description of this package for root Command', async () => {
+        await Command.execute(simple_command, ['-h']);
 
         expect(log).toHaveBeenLastCalledWith(
             `${meta.name}
@@ -84,14 +84,14 @@ const git_command = (
 );
 
 describe('Complex Command execution', () => {
-    it('should show the Version number of root Command', () => {
-        Command.execute(git_command, ['-v']);
+    it('should show the Version number of root Command', async () => {
+        await Command.execute(git_command, ['-v']);
 
         expect(log).toHaveBeenLastCalledWith('2.10.0');
     });
 
-    it('should show the Help text of root Command', () => {
-        Command.execute(git_command, ['-h']);
+    it('should show the Help text of root Command', async () => {
+        await Command.execute(git_command, ['-h']);
 
         expect(log).toHaveBeenLastCalledWith(`git [command] [options]
 
@@ -106,8 +106,8 @@ Commands:
   remote             Manage the set of repositories ("remotes") whose branches you track`);
     });
 
-    it('should show the Help text of sub Command', () => {
-        Command.execute(git_command, ['remote', 'help']);
+    it('should show the Help text of sub Command', async () => {
+        await Command.execute(git_command, ['remote', 'help']);
 
         expect(log).toHaveBeenLastCalledWith(`git remote
 
@@ -121,7 +121,7 @@ Commands:
   help  [command]  show Help information`);
     });
 
-    it('should show the Help text of sub Command with Options', () => {
+    it('should show the Help text of sub Command with Options', async () => {
         const text = `git remote add
 
 Adds a remote named <name> for the repository at <url>
@@ -133,17 +133,17 @@ Options:
 Commands:
   help  [command]  show Help information`;
 
-        Command.execute(git_command, ['remote', 'help', 'add']);
+        await Command.execute(git_command, ['remote', 'help', 'add']);
 
         expect(log).toHaveBeenLastCalledWith(text);
 
-        Command.execute(git_command, ['remote', 'add', '--help']);
+        await Command.execute(git_command, ['remote', 'add', '--help']);
 
         expect(log).toHaveBeenLastCalledWith(text);
     });
 
-    it('should execute the Command with Options & Data', () => {
-        Command.execute(git_command, [
+    it('should execute the Command with Options & Data', async () => {
+        await Command.execute(git_command, [
             'remote',
             'add',
             '-t',
@@ -159,14 +159,14 @@ Commands:
         );
     });
 
-    it('should handle the Error of Options & Commands', () => {
-        expect(() => Command.execute(git_command, ['test'])).toThrow(
+    it('should handle the Error of Options & Commands', async () => {
+        await expect(Command.execute(git_command, ['test'])).rejects.toThrow(
             new ReferenceError('Unknown "test" command')
         );
-        expect(() => Command.execute(git_command, ['--test'])).toThrow(
+        await expect(Command.execute(git_command, ['--test'])).rejects.toThrow(
             new ReferenceError('Unknown "test" option')
         );
-        expect(() => Command.execute(git_command, ['remote', 'add', '-t', 'a/1'])).toThrow(
+        await expect(Command.execute(git_command, ['remote', 'add', '-t', 'a/1'])).rejects.toThrow(
             new SyntaxError(`"tree=a/1" doesn't match /^\\w+$/`)
         );
     });

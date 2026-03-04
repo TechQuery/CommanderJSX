@@ -94,4 +94,4 @@ Commands:
 [1]: https://facebook.github.io/jsx/
 [2]: https://libraries.io/npm/commander-jsx
 [3]: https://github.com/TechQuery/CommanderJSX/actions/workflows/main.yml
-[4]: https://nodei.co/npm/commander-jsx/
+[4]: https://npm.im/commander-jsx
