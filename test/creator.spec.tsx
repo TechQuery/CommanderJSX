@@ -1,4 +1,7 @@
-import { Command, createTable } from '../source/dist';
+import { expect } from 'expect';
+import { describe, it } from 'node:test';
+
+import { Command, createTable } from '../source';
 
 describe('Creating utility', () => {
     it('should create a Command tree with JSX', () => {

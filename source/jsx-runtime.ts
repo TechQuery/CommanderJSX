@@ -1,6 +1,6 @@
 import { makeArray } from 'web-utility';
 
-import { Command, CommandChildren, CommandMeta } from './dist/Command';
+import type { Command, CommandChildren, CommandMeta } from './Command';
 
 declare global {
     namespace JSX {

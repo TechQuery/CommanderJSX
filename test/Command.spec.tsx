@@ -1,10 +1,14 @@
 import { currentModulePath, packageOf } from '@tech_query/node-toolkit';
+import { expect } from 'expect';
+import { describe, it, mock } from 'node:test';
 
-import { Command } from '../source/dist';
+import { Command } from '../source';
 
-const log = (console.log = jest.fn()),
+const log = mock.method(console, 'log', () => undefined),
     CMP = currentModulePath();
 const { meta } = packageOf(CMP);
+
+const lastLog = () => log.mock.calls.at(-1)?.arguments;
 
 const simple_command = (
     <Command>
@@ -13,7 +17,7 @@ const simple_command = (
 );
 
 describe('Simple Command execution', () => {
-    jest.replaceProperty(process, 'argv', ['node', CMP]);
+    mock.property(process, 'argv', ['node', CMP]);
 
     it('should find the Command Name in "package.json" for root Command', () => {
         const name = Command.nameOf(
@@ -33,13 +37,13 @@ describe('Simple Command execution', () => {
     it('should show the Version number of this package for root Command', async () => {
         await Command.execute(simple_command, ['-v']);
 
-        expect(log).toHaveBeenLastCalledWith(meta.version);
+        expect(lastLog()).toEqual([meta.version]);
     });
 
     it('should show the Name & Description of this package for root Command', async () => {
         await Command.execute(simple_command, ['-h']);
 
-        expect(log).toHaveBeenLastCalledWith(
+        expect(lastLog()).toEqual([
             `${meta.name}
 
 ${meta.description}
@@ -51,7 +55,7 @@ Options:
 Commands:
   help         [command]  show Help information
   sub-command`
-        );
+        ]);
     });
 });
 
@@ -87,13 +91,14 @@ describe('Complex Command execution', () => {
     it('should show the Version number of root Command', async () => {
         await Command.execute(git_command, ['-v']);
 
-        expect(log).toHaveBeenLastCalledWith('2.10.0');
+        expect(lastLog()).toEqual(['2.10.0']);
     });
 
     it('should show the Help text of root Command', async () => {
         await Command.execute(git_command, ['-h']);
 
-        expect(log).toHaveBeenLastCalledWith(`git [command] [options]
+        expect(lastLog()).toEqual([
+            `git [command] [options]
 
 Distributed Version Control system
 
@@ -103,13 +108,15 @@ Options:
 
 Commands:
   help    [command]  show Help information
-  remote             Manage the set of repositories ("remotes") whose branches you track`);
+  remote             Manage the set of repositories ("remotes") whose branches you track`
+        ]);
     });
 
     it('should show the Help text of sub Command', async () => {
         await Command.execute(git_command, ['remote', 'help']);
 
-        expect(log).toHaveBeenLastCalledWith(`git remote
+        expect(lastLog()).toEqual([
+            `git remote
 
 Manage the set of repositories ("remotes") whose branches you track
 
@@ -118,7 +125,8 @@ Options:
 
 Commands:
   add              Adds a remote named <name> for the repository at <url>
-  help  [command]  show Help information`);
+  help  [command]  show Help information`
+        ]);
     });
 
     it('should show the Help text of sub Command with Options', async () => {
@@ -135,11 +143,11 @@ Commands:
 
         await Command.execute(git_command, ['remote', 'help', 'add']);
 
-        expect(log).toHaveBeenLastCalledWith(text);
+        expect(lastLog()).toEqual([text]);
 
         await Command.execute(git_command, ['remote', 'add', '--help']);
 
-        expect(log).toHaveBeenLastCalledWith(text);
+        expect(lastLog()).toEqual([text]);
     });
 
     it('should execute the Command with Options & Data', async () => {
@@ -152,11 +160,11 @@ Commands:
             'https://github.com/TechQuery/CommanderJSX.git'
         ]);
 
-        expect(log).toHaveBeenLastCalledWith(
+        expect(lastLog()).toEqual([
             'master',
             'origin',
             'https://github.com/TechQuery/CommanderJSX.git'
-        );
+        ]);
     });
 
     it('should handle the Error of Options & Commands', async () => {

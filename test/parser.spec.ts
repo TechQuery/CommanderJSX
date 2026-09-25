@@ -1,4 +1,7 @@
-import { parseData, parseArguments } from '../source/dist/parser';
+import { expect } from 'expect';
+import { describe, it } from 'node:test';
+
+import { parseData, parseArguments } from '../source/parser';
 
 describe('Data parser', () => {
     it('should parse String to Data', () => {
