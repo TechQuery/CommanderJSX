@@ -1,15 +1,17 @@
 {
     "compilerOptions": {
-        "module": "CommonJS",
-        "moduleResolution": "Node",
+        "module": "Node16",
+        "moduleResolution": "Node16",
         "esModuleInterop": true,
         "jsx": "react-jsx",
         "jsxImportSource": "../source",
         "strict": true,
         "target": "ES2017",
         "lib": ["ES2022", "DOM"],
+        "types": ["node"],
         "declaration": true,
         "importHelpers": true,
+        "rootDir": ".",
         "outDir": "dist/"
     },
     "include": ["source/**/*.ts"],
@@ -18,7 +20,7 @@
         "excludeExternals": true,
         "excludePrivate": true,
         "readme": "./ReadMe.md",
-        "entryPoints": ["source/dist/index.ts", "source/jsx-runtime.ts"],
+        "entryPoints": ["source/index.ts", "source/jsx-runtime.ts"],
         "plugin": ["typedoc-plugin-mdn-links"]
     }
 }

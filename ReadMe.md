@@ -48,6 +48,12 @@ Command.execute(
         </Command>
     </Command>,
     process.argv.slice(2)
+).then(
+    () => process.exit(),
+    error => {
+        console.error(error);
+        process.exit(1);
+    }
 );
 ```
 
